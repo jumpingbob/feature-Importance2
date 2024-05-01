@@ -98,7 +98,7 @@ def main():
     st.write(f"Multiplier: {multiplier}")
 
 if __name__ == "__main__":
-    main().csv")
+    main()
     return data
 
 # 特徴量の重要度を計算する関数
