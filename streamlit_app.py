@@ -6,7 +6,7 @@ from sklearn.ensemble import RandomForestRegressor
 @st.cache
 def load_data():
     # ダミーデータを読み込む例
-    data = pd.read_csv("your_data.csv")
+    data = pd.read_xlsx("StressLevelDataset_filtered.xlsx")
     return data
 
 # 特徴量の重要度を計算する関数
