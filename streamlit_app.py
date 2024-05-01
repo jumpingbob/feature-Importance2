@@ -98,7 +98,7 @@ def main():
 
 if __name__ == "__main__":
     main()
-    return data
+ 
 
 # 特徴量の重要度を計算する関数
 def calculate_feature_importance(data):
