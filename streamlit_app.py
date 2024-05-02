@@ -8,15 +8,6 @@ def calculate_stress_level(answers, feature_importances):
 
 # Streamlitアプリケーションの作成
 def main():
-    st.title("Stress Level Calculator")
-
-    # 回答データの入力
-    st.subheader("Enter Your Answers:")
-    answers = {}
-    for feature in feature_importances.keys():
-        answer = st.slider(f"{feature} (1: Very Bad, 5: Very Good)", 1, 5, 3)
-        answers[feature] = answer
-
     # データの仮定された特徴量重要度
     feature_importances = {
         'Workload': 0.2,
@@ -31,6 +22,15 @@ def main():
         'Time Pressure': 0.1,
         'Uncertainty': 0.04
     }
+
+    st.title("Stress Level Calculator")
+
+    # 回答データの入力
+    st.subheader("Enter Your Answers:")
+    answers = {}
+    for feature in feature_importances.keys():
+        answer = st.slider(f"{feature} (1: Very Bad, 5: Very Good)", 1, 5, 3)
+        answers[feature] = answer
 
     # ストレスレベルの計算
     stress_level = calculate_stress_level(answers, feature_importances)
