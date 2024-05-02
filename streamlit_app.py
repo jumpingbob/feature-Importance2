@@ -1,20 +1,4 @@
 import streamlit as st
-import numpy as np
-
-# データの仮定された特徴量重要度
-feature_importances = {
-    'Workload': 0.2,
-    'Relationships': 0.15,
-    'Health': 0.1,
-    'Environment': 0.1,
-    'Financial': 0.08,
-    'Family': 0.07,
-    'Work-life balance': 0.06,
-    'Social': 0.05,
-    'Personal Growth': 0.05,
-    'Time Pressure': 0.1,
-    'Uncertainty': 0.04
-}
 
 # 加重平均を計算する関数
 def calculate_stress_level(answers, feature_importances):
@@ -32,6 +16,21 @@ def main():
     for feature in feature_importances.keys():
         answer = st.slider(f"{feature} (1: Very Bad, 5: Very Good)", 1, 5, 3)
         answers[feature] = answer
+
+    # データの仮定された特徴量重要度
+    feature_importances = {
+        'Workload': 0.2,
+        'Relationships': 0.15,
+        'Health': 0.1,
+        'Environment': 0.1,
+        'Financial': 0.08,
+        'Family': 0.07,
+        'Work-life balance': 0.06,
+        'Social': 0.05,
+        'Personal Growth': 0.05,
+        'Time Pressure': 0.1,
+        'Uncertainty': 0.04
+    }
 
     # ストレスレベルの計算
     stress_level = calculate_stress_level(answers, feature_importances)
