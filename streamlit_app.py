@@ -1,54 +1,45 @@
 import streamlit as st
-import pandas as pd
-from sklearn.ensemble import RandomForestRegressor
+import numpy as np
 
-# データの読み込み
-@st.cache
-def load_data():
-    # ダミーデータを読み込む例
-    data = pd.read_xlsx("StressLevelDataset_filtered.xlsx")
-    return data
+# データの仮定された特徴量重要度
+feature_importances = {
+    'Workload': 0.2,
+    'Relationships': 0.15,
+    'Health': 0.1,
+    'Environment': 0.1,
+    'Financial': 0.08,
+    'Family': 0.07,
+    'Work-life balance': 0.06,
+    'Social': 0.05,
+    'Personal Growth': 0.05,
+    'Time Pressure': 0.1,
+    'Uncertainty': 0.04
+}
 
-# 特徴量の重要度を計算する関数
-def calculate_feature_importance(data):
-    X = data.drop(columns=["target_column"])  # 特徴量
-    y = data["target_column"]  # ターゲット変数
+# 加重平均を計算する関数
+def calculate_stress_level(answers, feature_importances):
+    total_weight = sum(feature_importances.values())
+    stress_level = sum(answers[feature] * weight for feature, weight in feature_importances.items()) / total_weight
+    return stress_level
 
-    # ランダムフォレストモデルを初期化して学習
-    model = RandomForestRegressor()
-    model.fit(X, y)
-
-    # 特徴量の重要度を取得
-    feature_importance = model.feature_importances_
-
-    return feature_importance
-
-# 倍率を計算する関数
-def calculate_multiplier(feature_importance, user_input):
-    multiplier = 1
-    for i, importance in enumerate(feature_importance):
-        multiplier *= user_input[i] ** importance
-    return multiplier
-
+# Streamlitアプリケーションの作成
 def main():
-    st.title("Feature Importance Multiplier Calculator")
+    st.title("Stress Level Calculator")
 
-    # データの読み込み
-    data = load_data()
+    # 回答データの入力
+    st.subheader("Enter Your Answers:")
+    answers = {}
+    for feature in feature_importances.keys():
+        answer = st.slider(f"{feature} (1: Very Bad, 5: Very Good)", 1, 5, 3)
+        answers[feature] = answer
 
-    # 特徴量の重要度を計算
-    feature_importance = calculate_feature_importance(data)
+    # ストレスレベルの計算
+    stress_level = calculate_stress_level(answers, feature_importances)
 
-    # ユーザーが設定する特徴量の値
-    user_input = []
-    for i in range(len(feature_importance)):
-        user_input.append(st.slider(f"Feature {i+1}", min_value=0.0, max_value=10.0, value=5.0))
+    # 結果の表示
+    st.subheader("Your Stress Level:")
+    st.write(f"Your stress level is: {stress_level:.2f}")
 
-    # 倍率を計算
-    multiplier = calculate_multiplier(feature_importance, user_input)
-
-    # 結果を表示
-    st.write(f"Multiplier: {multiplier}")
-
+# アプリケーションの実行
 if __name__ == "__main__":
     main()
